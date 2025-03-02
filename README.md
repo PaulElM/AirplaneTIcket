@@ -1,66 +1,191 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# **Airplane Ticket Reservation API**
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## **📌 Description**
+This project is a **minimal Airplane Ticket Reservation System** built with **Laravel** and **Docker**. It provides a **RESTful API** to:
 
-## About Laravel
+- **Book airplane tickets**
+- **Cancel tickets**
+- **Change seats**
+- **Validate airport codes** (airports are preloaded for validation)
+- **Generate API documentation with Swagger**
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The project is **fully containerized** using **Docker Compose**, ensuring a seamless development experience.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## **🚀 How to Start the Project**
 
-## Learning Laravel
+### **1️⃣ Prerequisites**
+- **Docker (latest version)** installed
+- **Make (GNU Make)** installed
+- **Git** installed
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### **2️⃣ Clone the Repository**
+```sh
+ git clone https://github.com/your-username/airplane-ticket-reservation.git
+ cd airplane-ticket-reservation
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### **3️⃣ Setup and Start the Application**
+To start the full application, simply run:
+```sh
+ make app-start
+```
+➡ **This will:**
+- Start the MySQL database 🗄️
+- Run database migrations & seed default airports ✈️
+- Generate API documentation 📜
+- Start the Laravel API and Nginx 🚀
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Once complete, the API will be available at:
+```
+http://localhost:8080
+```
+Swagger API documentation:
+```
+http://localhost:8080/api/documentation
+```
 
-## Laravel Sponsors
+### **4️⃣ Stopping the Application**
+To stop all running services, use:
+```sh
+make stop
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### **5️⃣ Restarting the Application**
+To restart everything (useful after code changes):
+```sh
+make restart
+```
 
-### Premium Partners
+### **6️⃣ Checking Running Services**
+```sh
+make status
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### **7️⃣ Viewing Logs**
+```sh
+make logs
+```
 
-## Contributing
+### **8️⃣ Running Laravel Commands Inside the Container**
+You can execute **Laravel Artisan commands** using:
+```sh
+make artisan cmd=migrate
+```
+Examples:
+```sh
+make artisan cmd=config:clear
+make artisan cmd=cache:clear
+make artisan cmd=route:list
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### **9️⃣ Cleaning Up (Removing Containers and Volumes)**
+```sh
+make clean
+```
+🚨 **Warning:** This will **delete all database data**.
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## **🔧 Makefile Details**
+This project uses a **Makefile** for automation. The Makefile assumes you have the **latest Docker version**, where `docker compose` is used instead of `docker-compose`.
 
-## Security Vulnerabilities
+### **⚠️ If You Are Using an Old Docker Version**
+Change all occurrences of `docker compose` to `docker-compose` inside the **Makefile**.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### **📜 Makefile Commands Overview**
+```makefile
+# Command to check if MySQL is ready
+DB_CHECK_COMMAND=docker compose exec mysql mysqladmin ping -h mysql --silent
 
-## License
+# Start only the database
+db-start:
+	docker compose up -d mysql
+	@echo "⏳ Waiting for MySQL to be ready..."
+	until $(DB_CHECK_COMMAND); do sleep 2; done
+	@echo "✅ MySQL is ready!"
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# Run migrations after ensuring DB is fully started
+db-migrate: db-start api-start
+	docker compose exec app php artisan migrate --seed
+	@echo "✅ Database migrated successfully!"
+
+# Generate API documentation after migrations
+swagger-generate:
+	docker compose exec app php artisan l5-swagger:generate
+	@echo "✅ Swagger documentation generated!"
+
+# Start the API after ensuring DB and migrations are done
+api-start:
+	docker compose up -d app nginx
+	@echo "🚀 API is running at http://localhost:8080"
+
+# Start the entire app
+app-start: db-migrate
+	@echo "⏳ Starting APP... at http://localhost:8080"
+
+# Stop all running services
+stop:
+	docker compose down
+	@echo "🛑 Application stopped."
+
+# Restart everything
+restart: stop app-start
+	@echo "🔄 Application restarted."
+
+# Show running services
+status:
+	docker compose ps
+
+# Show application logs
+logs:
+	docker compose logs -f
+
+# Run Laravel commands inside the container
+artisan:
+	docker compose exec app php artisan $(cmd)
+
+# Clean Docker (removes all containers and volumes)
+clean:
+	docker compose down -v
+	@echo "🧹 All containers and volumes removed."
+```
+
+---
+
+## **📌 API Features**
+### ✅ **1. Book a Ticket**
+**Endpoint:** `POST /api/tickets`
+```sh
+curl -X POST http://localhost:8080/api/tickets -H "Content-Type: application/json" -d '{
+  "passport_id": "A1234567",
+  "source_airport": "JFK",
+  "destination_airport": "LAX",
+  "departure_time": "2025-03-10T12:00:00",
+  "aircraft_number": "AA101"
+}'
+```
+### ✅ **2. Cancel a Ticket**
+**Endpoint:** `PATCH /api/tickets/{id}/cancel`
+```sh
+curl -X PATCH http://localhost:8080/api/tickets/1/cancel
+```
+### ✅ **3. Change Seat**
+**Endpoint:** `PATCH /api/tickets/{id}/seat`
+```sh
+curl -X PATCH http://localhost:8080/api/tickets/1/seat
+```
+### ✅ **4. Fetch All Airports**
+**Endpoint:** `GET /api/airports`
+```sh
+curl -X GET http://localhost:8080/api/airports
+```
+
+---
+
+## **📜 License**
+This project is open-source and available under the **MIT License**.
+
+🚀 **Now You're Ready to Run the Airplane Ticket Reservation System!**
+

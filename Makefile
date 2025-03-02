@@ -9,9 +9,12 @@ db-start:
 	@echo "✅ MySQL is ready!"
 
 # Run migrations after ensuring DB is fully started
-db-migrate: db-start api-start
+db-migrate: db-start composer-install api-start
 	docker compose exec app php artisan migrate --seed
 	@echo "✅ Database migrated successfully!"
+
+composer-install:
+	docker compose exec app composer install
 
 # Generate API documentation after migrations
 swagger-generate:

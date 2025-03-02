@@ -9,11 +9,12 @@ db-start:
 	@echo "✅ MySQL is ready!"
 
 # Run migrations after ensuring DB is fully started
-db-migrate: db-start composer-install api-start
+db-migrate: db-start api-start composer-install
 	docker compose exec app php artisan migrate --seed
 	@echo "✅ Database migrated successfully!"
 
 composer-install:
+	cp .env.example .env
 	docker compose exec app composer install
 
 # Generate API documentation after migrations
@@ -27,7 +28,6 @@ api-start:
 	@echo "🚀 API is running at http://localhost:8080"
 
 app-start: db-migrate
-	cp .env.example .env
 	@echo "⏳ Starting APP... at http://localhost:8080"
 
 # Stop all running services

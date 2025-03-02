@@ -107,9 +107,13 @@ db-start:
 	@echo "✅ MySQL is ready!"
 
 # Run migrations after ensuring DB is fully started
-db-migrate: db-start api-start
+db-migrate: db-start api-start composer-install
 	docker compose exec app php artisan migrate --seed
 	@echo "✅ Database migrated successfully!"
+
+composer-install:
+	cp .env.example .env
+	docker compose exec app composer install
 
 # Generate API documentation after migrations
 swagger-generate:
@@ -121,7 +125,6 @@ api-start:
 	docker compose up -d app nginx
 	@echo "🚀 API is running at http://localhost:8080"
 
-# Start the entire app
 app-start: db-migrate
 	@echo "⏳ Starting APP... at http://localhost:8080"
 
@@ -130,7 +133,7 @@ stop:
 	docker compose down
 	@echo "🛑 Application stopped."
 
-# Restart everything
+# Restart everything (useful after changes)
 restart: stop app-start
 	@echo "🔄 Application restarted."
 

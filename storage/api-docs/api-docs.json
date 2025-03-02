@@ -1,0 +1,506 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Airplane Ticket Reservation API",
+        "description": "API for managing airports and airplane tickets",
+        "contact": {
+            "email": "support@example.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080",
+            "description": "Local Development Server"
+        },
+        {
+            "url": "/"
+        }
+    ],
+    "paths": {
+        "/api/airports": {
+            "get": {
+                "tags": [
+                    "Airports"
+                ],
+                "summary": "Get all airports",
+                "operationId": "36bec0a2b27fca4a4e23dd92070adecf",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Airports"
+                ],
+                "summary": "Add a new airport",
+                "operationId": "a757ecaef11f8db40b69a1a94f4783e4",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "code",
+                                    "name",
+                                    "country"
+                                ],
+                                "properties": {
+                                    "code": {
+                                        "description": "Airport IATA code (3-letter)",
+                                        "type": "string",
+                                        "example": "CDG"
+                                    },
+                                    "name": {
+                                        "description": "Full name of the airport",
+                                        "type": "string",
+                                        "example": "Charles de Gaulle Airport"
+                                    },
+                                    "country": {
+                                        "description": "Country where the airport is located",
+                                        "type": "string",
+                                        "example": "France"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Airport successfully created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "code": {
+                                            "type": "string",
+                                            "example": "CDG"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Charles de Gaulle Airport"
+                                        },
+                                        "country": {
+                                            "type": "string",
+                                            "example": "France"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2025-03-10T12:00:00Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2025-03-10T12:00:00Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "The code field is required."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/tickets": {
+            "get": {
+                "tags": [
+                    "Tickets"
+                ],
+                "summary": "Get all booked tickets",
+                "operationId": "0082053c3590628e674a11ec0d1466e6",
+                "responses": {
+                    "200": {
+                        "description": "List of all tickets",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "passport_id": {
+                                                "description": "Passenger's passport ID",
+                                                "type": "string",
+                                                "example": "A1234567"
+                                            },
+                                            "source_airport": {
+                                                "description": "IATA code of the source airport",
+                                                "type": "string",
+                                                "example": "JFK"
+                                            },
+                                            "destination_airport": {
+                                                "description": "IATA code of the destination airport",
+                                                "type": "string",
+                                                "example": "LAX"
+                                            },
+                                            "departure_time": {
+                                                "description": "Scheduled departure time",
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2025-03-10T12:00:00"
+                                            },
+                                            "aircraft_number": {
+                                                "description": "Aircraft flight number",
+                                                "type": "string",
+                                                "example": "AA101"
+                                            },
+                                            "seat": {
+                                                "description": "Seat assigned to the passenger",
+                                                "type": "string",
+                                                "example": "B12"
+                                            },
+                                            "status": {
+                                                "description": "Ticket status",
+                                                "type": "string",
+                                                "enum": [
+                                                    "booked",
+                                                    "cancelled"
+                                                ],
+                                                "example": "booked"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2025-03-10T12:00:00Z"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2025-03-10T12:00:00Z"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Tickets"
+                ],
+                "summary": "Book a new ticket",
+                "operationId": "e18a493d99e8bed380f5efc9c8f3822f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "passport_id",
+                                    "source_airport",
+                                    "destination_airport",
+                                    "departure_time",
+                                    "aircraft_number"
+                                ],
+                                "properties": {
+                                    "passport_id": {
+                                        "type": "string",
+                                        "example": "A1234567"
+                                    },
+                                    "source_airport": {
+                                        "type": "string",
+                                        "example": "JFK"
+                                    },
+                                    "destination_airport": {
+                                        "type": "string",
+                                        "example": "LAX"
+                                    },
+                                    "departure_time": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-03-10T12:00:00"
+                                    },
+                                    "aircraft_number": {
+                                        "type": "string",
+                                        "example": "AA101"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Ticket successfully created"
+                    },
+                    "400": {
+                        "description": "Invalid airport code",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid source or destination airport code"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/tickets/{id}/cancel": {
+            "patch": {
+                "tags": [
+                    "Tickets"
+                ],
+                "summary": "Cancel a ticket",
+                "operationId": "c09008c79eead6ba4608a98f1c2ae7d9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Ticket ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ticket successfully cancelled",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ticket cancelled"
+                                        },
+                                        "ticket": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "passport_id": {
+                                                    "type": "string",
+                                                    "example": "A1234567"
+                                                },
+                                                "source_airport": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "destination_airport": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "departure_time": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-03-10T12:00:00"
+                                                },
+                                                "aircraft_number": {
+                                                    "type": "string",
+                                                    "example": "AA101"
+                                                },
+                                                "seat": {
+                                                    "type": "string",
+                                                    "example": "B12"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "cancelled"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-03-10T12:00:00Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-03-11T15:45:00Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ticket not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Ticket not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/tickets/{id}/seat": {
+            "patch": {
+                "tags": [
+                    "Tickets"
+                ],
+                "summary": "Change seat of a ticket",
+                "operationId": "d6d771c8ea8f178c69a7b1ede691dd8b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Ticket ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Seat successfully changed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "passport_id": {
+                                            "type": "string",
+                                            "example": "A1234567"
+                                        },
+                                        "source_airport": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "destination_airport": {
+                                            "type": "integer",
+                                            "example": 2
+                                        },
+                                        "departure_time": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2025-03-10T12:00:00"
+                                        },
+                                        "aircraft_number": {
+                                            "type": "string",
+                                            "example": "AA101"
+                                        },
+                                        "seat": {
+                                            "type": "string",
+                                            "example": "C15"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "booked"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2025-03-10T12:00:00Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2025-03-11T15:45:00Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Cannot change seat of a cancelled ticket",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Cannot change seat of a cancelled ticket"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ticket not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Ticket not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Airports",
+            "description": "Airports"
+        },
+        {
+            "name": "Tickets",
+            "description": "Tickets"
+        }
+    ]
+}

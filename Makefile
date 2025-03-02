@@ -24,6 +24,7 @@ api-start:
 	@echo "🚀 API is running at http://localhost:8080"
 
 app-start: db-migrate
+	cp .env.example .env
 	@echo "⏳ Starting APP... at http://localhost:8080"
 
 # Stop all running services

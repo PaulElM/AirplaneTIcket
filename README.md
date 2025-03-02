@@ -23,7 +23,7 @@ The project is **fully containerized** using **Docker Compose**, ensuring a seam
 ### **2️⃣ Clone the Repository**
 ```sh
  git clone https://github.com/PaulElMaaouchi/AirplaneTIcket.git
- cd airplane-ticket-reservation
+ cd AirplaneTIcket
 ```
 
 ### **3️⃣ Setup and Start the Application**

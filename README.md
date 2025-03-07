@@ -22,7 +22,7 @@ The project is **fully containerized** using **Docker Compose**, ensuring a seam
 
 ### **2️⃣ Clone the Repository**
 ```sh
- git clone https://github.com/PaulElMaaouchi/AirplaneTIcket.git
+ git clone https://github.com/PaulElM/AirplaneTIcket.git
  cd AirplaneTIcket
 ```
 
